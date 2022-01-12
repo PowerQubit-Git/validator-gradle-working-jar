@@ -1,0 +1,42 @@
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.github.sherter.google-java-format' version '0.9'
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'nebula-aggregate-javadocs'
+
+// A resolvable configuration to collect test reports data
+configurations {
+    testReportData {
+        canBeResolved = true
+        canBeConsumed = false
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+            attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+        }
+    }
+}
+
+dependencies {
+    testReportData project('main')
+    testReportData project(':processor')
+    testReportData project(':core')
+}
+
+tasks.register('testReport', TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Use test results from testReportData configuration
+    testResultDirs.from(configurations.testReportData)
+}

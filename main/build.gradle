@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE")
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'application'
+}
+
+applicationDefaultJvmArgs = [ "-Xmx8G" ]
+mainClassName = 'org.mobilitydata.gtfsvalidator.Main'
+
+group = 'org.mobilitydata'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+//shadowJar {
+//    enabled true
+//}
+
+bootJar {
+    enabled true
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'commons-compress:commons-compress:20050911'
+    implementation 'org.apache.commons:commons-compress:1.21'
+    annotationProcessor project(':processor')
+    compileOnly project(':processor')
+    implementation project(':core')
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.0.3'
+    implementation 'com.beust:jcommander:1.48'
+    implementation 'javax.inject:javax.inject:1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.google.flogger:flogger:0.6'
+    implementation 'com.google.flogger:flogger-system-backend:0.6'
+    implementation 'com.univocity:univocity-parsers:2.9.0'
+    implementation 'com.google.geometry:s2-geometry:2.0.0'
+//    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+//    testImplementation group: 'junit', name: 'junit', version: '4.13'
+//    testImplementation 'com.google.truth:truth:1.0.1'
+//    testImplementation 'com.google.truth.extensions:truth-java8-extension:1.0.1'
+}
+
+
